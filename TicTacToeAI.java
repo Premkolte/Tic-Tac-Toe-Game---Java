@@ -4,7 +4,6 @@ public class TicTacToeAI {
     static char[][] board;
     static char currentPlayer = 'X';
     static boolean useSmartAI = false; // Switch between AI modes
-    // static List<Move> moveHistory = new ArrayList<>(); // List to track the moves
     static int boardSize; // Size of the board
     static int winCondition; // Number of consecutive marks required to win
 
@@ -13,7 +12,11 @@ public class TicTacToeAI {
 
         // Board size selection
         System.out.println("Welcome to Tic Tac Toe (Single Player Mode)!");
-        System.out.println("Enter the board size (e.g., 4 for 4x4, 5 for 5x5): ");
+        System.out.print("Enter the board size (e.g., 4 for 4x4, 5 for 5x5): ");
+        while (!sc.hasNextInt()) { // Check if the next input is an integer
+            System.out.println("Invalid input! Please enter an integer.");
+            sc.next(); // Clear the invalid input
+        }
         boardSize = sc.nextInt();
         winCondition = boardSize; // Set win condition based on board size
 
@@ -25,6 +28,10 @@ public class TicTacToeAI {
         System.out.println("1. Random AI (Beginner)");
         System.out.println("2. Smart AI (Advanced)");
         System.out.print("Enter your choice (1 or 2): ");
+        while (!sc.hasNextInt()) { // Check if the next input is an integer
+            System.out.println("Invalid input! Please enter 1 or 2.");
+            sc.next(); // Clear the invalid input
+        }
         int choice = sc.nextInt();
         useSmartAI = (choice == 2);
 
@@ -40,7 +47,6 @@ public class TicTacToeAI {
 
                 if (isValidMove(row, col)) {
                     board[row][col] = 'X';
-                    // moveHistory.add(new Move(row, col, 'X')); // Save the move
                     printBoard();
                     if (isWinner('X')) {
                         System.out.println("Congratulations! Player X wins! 🎉");
@@ -61,7 +67,6 @@ public class TicTacToeAI {
                 } else {
                     makeRandomMove(); // Random AI
                 }
-                // moveHistory.add(new Move(getLastMoveRow(), getLastMoveCol(), 'O')); // Save the AI move
                 printBoard();
                 if (isWinner('O')) {
                     System.out.println("AI wins! Better luck next time. 🤖");
@@ -74,10 +79,6 @@ public class TicTacToeAI {
                 currentPlayer = 'X'; // Switch back to Player
             }
         }
-
-        // Replay Game Animation
-        // replayGame();
-
         sc.close();
     }
 
@@ -92,19 +93,23 @@ public class TicTacToeAI {
         currentPlayer = 'X'; // Player starts first
     }
 
-    // Function to print the board
+    // Function to print the board with improved UI
     public static void printBoard() {
-        System.out.print("  ");
+        // System.out.println("\n=========================");
+        System.out.print("   ");
         for (int i = 1; i <= boardSize; i++) {
             System.out.print(i + "   ");
         }
         System.out.println();
+        System.out.println("  =======================");
+
         for (int i = 0; i < boardSize; i++) {
-            System.out.print(i + 1 + " ");
+            System.out.print(i + 1 + " |");
             for (int j = 0; j < boardSize; j++) {
-                System.out.print(board[i][j] + "   ");
+                System.out.print(board[i][j] + " |");
             }
             System.out.println();
+            System.out.println("  =======================");
         }
     }
 
@@ -219,51 +224,4 @@ public class TicTacToeAI {
         }
         return true;
     }
-
-    // Function to get the last AI move
-    public static int getLastMoveRow() {
-        for (int i = boardSize - 1; i >= 0; i--) {
-            for (int j = boardSize - 1; j >= 0; j--) {
-                if (board[i][j] == 'O') return i;
-            }
-        }
-        return -1;
-    }
-
-    // Function to get the last AI move's column
-    public static int getLastMoveCol() {
-        for (int i = boardSize - 1; i >= 0; i--) {
-            for (int j = boardSize - 1; j >= 0; j--) {
-                if (board[i][j] == 'O') return j;
-            }
-        }
-        return -1;
-    }
-
-    // // Helper class to store the moves
-    // static class Move {
-    //     int row, col;
-    //     char player;
-
-    //     Move(int row, int col, char player) {
-    //         this.row = row;
-    //         this.col = col;
-    //         this.player = player;
-    //     }
-    // }
-
-    // // Replay Game Animation
-    // public static void replayGame() {
-    //     System.out.println("\nReplaying the game...");
-    //     for (Move move : moveHistory) {
-    //         board[move.row][move.col] = move.player;
-    //         printBoard();
-    //         try {
-    //             Thread.sleep(1000); // Delay to animate the replay
-    //         } catch (InterruptedException e) {
-    //             e.printStackTrace();
-    //         }
-    //     }
-    //     System.out.println("\nGame replay finished.");
-    // }
 }
